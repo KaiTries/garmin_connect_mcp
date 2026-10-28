@@ -43,7 +43,14 @@ def main() -> None:
     from .http_app import build_http_app
 
     app = build_http_app(mcp, host=settings.host, token=settings.http_token, allowed_hosts=settings.allowed_hosts)
-    uvicorn.run(app, host=settings.host, port=settings.port, log_level="warning", proxy_headers=True)
+    uvicorn.run(
+        app,
+        host=settings.host,
+        port=settings.port,
+        log_level="info",
+        proxy_headers=True,
+        forwarded_allow_ips="127.0.0.1",
+    )
 
 
 if __name__ == "__main__":

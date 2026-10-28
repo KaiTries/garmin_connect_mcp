@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.12.10-slim
 
 COPY --from=ghcr.io/astral-sh/uv:0.13 /uv /uvx /bin/
 
@@ -16,7 +16,7 @@ ENV PATH="/app/.venv/bin:$PATH" \
     GARMIN_MCP_PORT=8000 \
     GARMIN_PERSONAL_API_KEY_FILE=/run/secrets/garmin_api_key \
     GARMIN_MCP_HTTP_TOKEN_FILE=/run/secrets/mcp_http_token \
-    TZ=Europe/Zurich
+    TZ=UTC
 
 USER app
 

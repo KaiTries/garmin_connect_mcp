@@ -1,3 +1,8 @@
 """Read-only MCP server for your own Garmin Connect data (official Personal API)."""
 
-__version__ = "0.1.0"
+from importlib.metadata import version as _v, PackageNotFoundError
+
+try:
+    __version__ = _v("garmin-pulse-mcp")
+except PackageNotFoundError:
+    __version__ = "unknown"
