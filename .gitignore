@@ -1,3 +1,6 @@
+# macOS
+.DS_Store
+
 # secrets — never commit these
 secrets/
 .env

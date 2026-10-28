@@ -65,7 +65,7 @@ macOS Claude Desktop: `~/Library/Application Support/Claude/claude_desktop_confi
       "env": {
         "GARMIN_PERSONAL_API_KEY": "YOUR-KEY-HERE",
         "GARMIN_MCP_TZ": "Europe/Zurich",
-        "GARMIN_KEY_EXPIRES": "2026-10-28"
+        "GARMIN_KEY_EXPIRES": "2027-10-28"
       }
     }
   }

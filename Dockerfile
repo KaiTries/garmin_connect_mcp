@@ -7,7 +7,7 @@ RUN useradd --create-home --uid 10001 app \
  && chown -R app:app /home/app/.config
 WORKDIR /app
 COPY pyproject.toml README.md uv.lock ./
-COPY src ./src
+COPY garmin_connect_mcp ./garmin_connect_mcp
 RUN uv sync --frozen --no-dev
 
 ENV PATH="/app/.venv/bin:$PATH" \
