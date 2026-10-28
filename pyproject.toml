@@ -17,7 +17,7 @@ dependencies = [
     "uvicorn>=0.30",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = ["pytest>=8", "responses>=0.25", "anyio>=4", "fit-tool>=0.9"]
 
 [project.scripts]
