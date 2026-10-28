@@ -22,4 +22,4 @@ USER app
 
 EXPOSE 8000
 HEALTHCHECK --interval=60s --timeout=5s CMD python -c "import urllib.request,sys; sys.exit(urllib.request.urlopen('http://127.0.0.1:8000/healthz').status != 200)"
-CMD ["garmin-pulse-mcp"]
+CMD ["garmin-connect-mcp"]

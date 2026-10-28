@@ -6,8 +6,8 @@ import pytest
 import responses
 from responses import matchers
 
-from garmin_pulse_mcp.config import Settings
-from garmin_pulse_mcp.garmin import GarminError, GarminSource, windows
+from garmin_connect_mcp.config import Settings
+from garmin_connect_mcp.garmin import GarminError, GarminSource, windows
 from tests.conftest import BASE, TOKEN_URL, fake_jwt
 
 SLEEP_URL = BASE + "/sleep-service/sleep/dailySleepSummariesByDate"

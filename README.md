@@ -1,4 +1,4 @@
-# garmin-pulse-mcp
+# garmin-connect-mcp
 
 A read-only MCP server for your own Garmin Connect data, built on Garmin's **official
 Personal API** (no password, no scraping). It authenticates with a revocable API key you
@@ -61,7 +61,7 @@ macOS Claude Desktop: `~/Library/Application Support/Claude/claude_desktop_confi
   "mcpServers": {
     "garmin": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/KaiTries/garmin_connect_mcp", "garmin-pulse-mcp"],
+      "args": ["--from", "git+https://github.com/KaiTries/garmin_connect_mcp", "garmin-connect-mcp"],
       "env": {
         "GARMIN_PERSONAL_API_KEY": "YOUR-KEY-HERE",
         "GARMIN_MCP_TZ": "Europe/Zurich",
@@ -74,13 +74,13 @@ macOS Claude Desktop: `~/Library/Application Support/Claude/claude_desktop_confi
 
 Claude Code:
 ```bash
-claude mcp add garmin -- uvx --from git+https://github.com/KaiTries/garmin_connect_mcp garmin-pulse-mcp
+claude mcp add garmin -- uvx --from git+https://github.com/KaiTries/garmin_connect_mcp garmin-connect-mcp
 # then set the key: claude mcp edit garmin  (add GARMIN_PERSONAL_API_KEY to env)
 ```
 
 `uvx` fetches and caches the package on first run. To update to the latest version later:
 ```bash
-uvx --from git+https://github.com/KaiTries/garmin_connect_mcp --reinstall garmin-pulse-mcp check
+uvx --from git+https://github.com/KaiTries/garmin_connect_mcp --reinstall garmin-connect-mcp check
 ```
 
 **Prefer a secrets file?** Store the key at `~/.config/garmin/connect-personal-api-key`

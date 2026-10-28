@@ -1,4 +1,4 @@
-"""Entry point: `garmin-pulse-mcp` (stdio by default) or `garmin-pulse-mcp check`."""
+"""Entry point: `garmin-connect-mcp` (stdio by default) or `garmin-connect-mcp check`."""
 
 from __future__ import annotations
 

@@ -3,6 +3,6 @@
 from importlib.metadata import version as _v, PackageNotFoundError
 
 try:
-    __version__ = _v("garmin-pulse-mcp")
+    __version__ = _v("garmin-connect-mcp")
 except PackageNotFoundError:
     __version__ = "unknown"

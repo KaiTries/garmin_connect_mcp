@@ -10,9 +10,9 @@ import httpx
 import pytest
 from mcp.shared.memory import create_connected_server_and_client_session
 
-from garmin_pulse_mcp.config import Settings
-from garmin_pulse_mcp.garmin import GarminError
-from garmin_pulse_mcp.server import build_server
+from garmin_connect_mcp.config import Settings
+from garmin_connect_mcp.garmin import GarminError
+from garmin_connect_mcp.server import build_server
 from tests import fixtures as f
 from tests.conftest import build_brick_fit
 
@@ -160,7 +160,7 @@ def _free_port() -> int:
 
 def _start(env_extra):
     env = {**os.environ, "GARMIN_MCP_TRANSPORT": "streamable-http", **env_extra}
-    return subprocess.Popen([sys.executable, "-m", "garmin_pulse_mcp"], env=env, stderr=subprocess.PIPE)
+    return subprocess.Popen([sys.executable, "-m", "garmin_connect_mcp"], env=env, stderr=subprocess.PIPE)
 
 
 def test_http_requires_bearer_token():

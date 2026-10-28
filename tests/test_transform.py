@@ -1,5 +1,5 @@
-from garmin_pulse_mcp import transform as t
-from garmin_pulse_mcp.fit import summarize_fit, zone_time
+from garmin_connect_mcp import transform as t
+from garmin_connect_mcp.fit import summarize_fit, zone_time
 from tests import fixtures as f
 from tests.conftest import build_brick_fit
 
