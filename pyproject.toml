@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "garmin-pulse-mcp"
+version = "0.1.0"
+description = "Read-only MCP server for your own Garmin Connect data, built on Garmin's official Personal API"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+dependencies = [
+    "garmin-connect-personal-api-python>=1.0,<2",
+    # mcp 2.x renamed FastMCP; stay on the 1.x API until ported.
+    "mcp>=1.26,<2",
+    "fitparse>=1.2,<2",
+    "uvicorn>=0.30",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "responses>=0.25", "anyio>=4", "fit-tool>=0.9"]
+
+[project.scripts]
+garmin-pulse-mcp = "garmin_pulse_mcp.__main__:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/garmin_pulse_mcp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["ignore::DeprecationWarning:fitparse.*"]

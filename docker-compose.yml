@@ -1,0 +1,26 @@
+services:
+  garmin-mcp:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      # Optional: date your key expires, so get_profile can warn two weeks ahead
+      # GARMIN_KEY_EXPIRES: "2027-10-28"
+      # Host names a reverse proxy forwards; enables DNS-rebinding protection
+      # GARMIN_MCP_ALLOWED_HOSTS: "garmin.home.example.ch"
+      TZ: Europe/Zurich
+    secrets:
+      - garmin_api_key
+      - mcp_http_token
+    volumes:
+      - garmin-token-cache:/home/app/.config/garmin
+
+secrets:
+  garmin_api_key:
+    file: ./secrets/garmin_api_key
+  mcp_http_token:
+    file: ./secrets/mcp_http_token
+
+volumes:
+  garmin-token-cache:
