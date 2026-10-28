@@ -31,41 +31,77 @@ VO2max trend, race predictor, creating or scheduling workouts, writing anything.
 
 ## Setup
 
-1. **Create a key**: Garmin Connect web → Settings → Personal API
-   (<https://connect.garmin.com/app/settings/personalApiToken>). Pick an expiry (max one
-   year), copy the key; it's shown once.
-2. **Store it** where Garmin's client looks by default:
-   ```bash
-   mkdir -p ~/.config/garmin
-   printf '%s' 'YOUR-KEY' > ~/.config/garmin/connect-personal-api-key
-   chmod 600 ~/.config/garmin/connect-personal-api-key
-   ```
-   (or set `GARMIN_PERSONAL_API_KEY`, or point `GARMIN_PERSONAL_API_KEY_FILE` at a file.)
-3. **Check it**:
-   ```bash
-   uv run --directory /path/to/garmin-pulse-mcp garmin-pulse-mcp check
-   # OK: signed in as …, units metric, 5 recent activities visible.
-   ```
+### 1. Install uv
+
+[uv](https://docs.astral.sh/uv/) is the only prerequisite — it handles Python and the
+package in one shot.
+
+```bash
+# macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+```powershell
+# Windows
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+### 2. Create a Garmin Personal API key
+
+Garmin Connect web → Settings → Personal API
+(<https://connect.garmin.com/app/settings/personalApiToken>). Pick an expiry (max one
+year), copy the key; it's shown once.
+
+### 3. Store the key
+
+```bash
+mkdir -p ~/.config/garmin
+printf '%s' 'YOUR-KEY' > ~/.config/garmin/connect-personal-api-key
+chmod 600 ~/.config/garmin/connect-personal-api-key
+```
+
+Or use an environment variable instead: `GARMIN_PERSONAL_API_KEY=YOUR-KEY`, or point
+`GARMIN_PERSONAL_API_KEY_FILE` at any file containing the key.
+
+### 4. Verify
+
+```bash
+uvx --from git+https://github.com/KaiTries/garmin_connect_mcp garmin-pulse-mcp check
+# OK: signed in as …, units metric, 5 recent activities visible.
+```
 
 ### Local (stdio): Claude Desktop / Claude Code
+
+Add to your MCP config. macOS Claude Desktop:
+`~/Library/Application Support/Claude/claude_desktop_config.json`
 
 ```json
 {
   "mcpServers": {
     "garmin": {
-      "command": "uv",
-      "args": ["run", "--directory", "/path/to/garmin-pulse-mcp", "garmin-pulse-mcp"],
-      "env": { "GARMIN_MCP_TZ": "Europe/Zurich", "GARMIN_KEY_EXPIRES": "2027-10-28" }
+      "command": "uvx",
+      "args": ["--from", "git+https://github.com/KaiTries/garmin_connect_mcp", "garmin-pulse-mcp"],
+      "env": { "GARMIN_MCP_TZ": "Europe/Zurich", "GARMIN_KEY_EXPIRES": "2026-10-28" }
     }
   }
 }
 ```
 
-Claude Code: `claude mcp add garmin -- uv run --directory /path/to/garmin-pulse-mcp garmin-pulse-mcp`
+Claude Code:
+```bash
+claude mcp add garmin -- uvx --from git+https://github.com/KaiTries/garmin_connect_mcp garmin-pulse-mcp
+```
+
+`uvx` fetches and caches the package on first run. To update to the latest version later:
+```bash
+uvx --from git+https://github.com/KaiTries/garmin_connect_mcp --reinstall garmin-pulse-mcp check
+```
 
 ### Home server (streamable HTTP)
 
 ```bash
+git clone https://github.com/KaiTries/garmin_connect_mcp
+cd garmin_connect_mcp
 mkdir -p secrets
 printf '%s' 'YOUR-GARMIN-KEY' > secrets/garmin_api_key
 openssl rand -hex 32 > secrets/mcp_http_token
@@ -80,7 +116,9 @@ non-loopback address without a token unless you set `GARMIN_MCP_ALLOW_UNAUTHENTI
 `GARMIN_MCP_ALLOWED_HOSTS` to the public host name to enable DNS-rebinding protection.
 
 Claude Code against the server:
-`claude mcp add --transport http garmin https://garmin.your.lan/mcp --header "Authorization: Bearer $TOKEN"`
+```bash
+claude mcp add --transport http garmin https://garmin.your.lan/mcp --header "Authorization: Bearer $TOKEN"
+```
 
 ## Configuration
 
@@ -108,8 +146,10 @@ Claude Code against the server:
 ## Development
 
 ```bash
-uv venv && uv pip install -e ".[dev]"
-.venv/bin/python -m pytest
+git clone https://github.com/KaiTries/garmin_connect_mcp
+cd garmin_connect_mcp
+uv sync --frozen
+uv run pytest
 ```
 
 Tests use payloads shaped after Garmin's OpenAPI models, mocked HTTP for the client layer,
