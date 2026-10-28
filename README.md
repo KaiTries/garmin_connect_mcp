@@ -52,28 +52,9 @@ Garmin Connect web → Settings → Personal API
 (<https://connect.garmin.com/app/settings/personalApiToken>). Pick an expiry (max one
 year), copy the key; it's shown once.
 
-### 3. Store the key
+### 3. Add to your MCP config
 
-```bash
-mkdir -p ~/.config/garmin
-printf '%s' 'YOUR-KEY' > ~/.config/garmin/connect-personal-api-key
-chmod 600 ~/.config/garmin/connect-personal-api-key
-```
-
-Or use an environment variable instead: `GARMIN_PERSONAL_API_KEY=YOUR-KEY`, or point
-`GARMIN_PERSONAL_API_KEY_FILE` at any file containing the key.
-
-### 4. Verify
-
-```bash
-uvx --from git+https://github.com/KaiTries/garmin_connect_mcp garmin-pulse-mcp check
-# OK: signed in as …, units metric, 5 recent activities visible.
-```
-
-### Local (stdio): Claude Desktop / Claude Code
-
-Add to your MCP config. macOS Claude Desktop:
-`~/Library/Application Support/Claude/claude_desktop_config.json`
+macOS Claude Desktop: `~/Library/Application Support/Claude/claude_desktop_config.json`
 
 ```json
 {
@@ -81,7 +62,11 @@ Add to your MCP config. macOS Claude Desktop:
     "garmin": {
       "command": "uvx",
       "args": ["--from", "git+https://github.com/KaiTries/garmin_connect_mcp", "garmin-pulse-mcp"],
-      "env": { "GARMIN_MCP_TZ": "Europe/Zurich", "GARMIN_KEY_EXPIRES": "2026-10-28" }
+      "env": {
+        "GARMIN_PERSONAL_API_KEY": "YOUR-KEY-HERE",
+        "GARMIN_MCP_TZ": "Europe/Zurich",
+        "GARMIN_KEY_EXPIRES": "2026-10-28"
+      }
     }
   }
 }
@@ -90,11 +75,22 @@ Add to your MCP config. macOS Claude Desktop:
 Claude Code:
 ```bash
 claude mcp add garmin -- uvx --from git+https://github.com/KaiTries/garmin_connect_mcp garmin-pulse-mcp
+# then set the key: claude mcp edit garmin  (add GARMIN_PERSONAL_API_KEY to env)
 ```
 
 `uvx` fetches and caches the package on first run. To update to the latest version later:
 ```bash
 uvx --from git+https://github.com/KaiTries/garmin_connect_mcp --reinstall garmin-pulse-mcp check
+```
+
+**Prefer a secrets file?** Store the key at `~/.config/garmin/connect-personal-api-key`
+(mode `600`) and omit `GARMIN_PERSONAL_API_KEY` from the config. Useful if multiple tools
+share the same key or you'd rather not put credentials in the MCP config file.
+
+```bash
+mkdir -p ~/.config/garmin
+printf '%s' 'YOUR-KEY' > ~/.config/garmin/connect-personal-api-key
+chmod 600 ~/.config/garmin/connect-personal-api-key
 ```
 
 ### Home server (streamable HTTP)
